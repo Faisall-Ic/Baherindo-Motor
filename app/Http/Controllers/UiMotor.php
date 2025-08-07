@@ -5,14 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\MotorOsis;
 use Illuminate\Http\Request;
 
-class WelcomeController extends Controller
+class UiMotor extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-       return view('welcome');
+        $motor = MotorOsis::all();
+        return view('motor', compact('motor'));
     }
 
     /**
@@ -28,7 +29,7 @@ class WelcomeController extends Controller
      */
     public function store(Request $request)
     {
-        
+        //
     }
 
     /**

@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\MotorOsis;
+use App\Models\Mobil;
 use Illuminate\Http\Request;
 
-class WelcomeController extends Controller
+class UiMobil extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-       return view('welcome');
+       $mobil = Mobil::all();
+        return view('mobil', compact('mobil'));
     }
 
     /**
@@ -28,7 +29,7 @@ class WelcomeController extends Controller
      */
     public function store(Request $request)
     {
-        
+        //
     }
 
     /**
