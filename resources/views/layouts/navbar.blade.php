@@ -5,8 +5,8 @@
     <div>
         <ul class="flex list-none font-semibold text-2xl gap-7 px-5">
             <li class="text-gray-900 hover:text-gray-500 duration-300"><a href="{{ route('welcome') }}">Home</a></li>
-            <li class="text-gray-900 hover:text-gray-500 duration-300"><a href="#">About</a></li>
-            <li class="text-gray-900 hover:text-gray-500 duration-300"><a href="#">Contact</a></li>
+            <li class="text-gray-900 hover:text-gray-500 duration-300"><a href="#about">About</a></li>
+            <li class="text-gray-900 hover:text-gray-500 duration-300"><a href="#contact">Contact</a></li>
             <li class="text-gray-900 hover:text-gray-500 duration-300"><a href="{{ route('motor.index') }}">Motor</a></li>
             <li class="text-gray-900 hover:text-gray-500 duration-300"><a href="{{ route('mobil.index') }}">Mobil</a></li>
         </ul>

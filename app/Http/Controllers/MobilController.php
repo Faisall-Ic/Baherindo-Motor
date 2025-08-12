@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Mobil;
+use App\Models\MotorOsis;
 use Illuminate\Http\Request;
 
 class MobilController extends Controller
@@ -12,7 +13,8 @@ class MobilController extends Controller
      */
     public function index()
     {
-        return view('mobil.create');
+        $mobil = Mobil::paginate(10);
+        return view('mobil.index', compact('mobil'));
     }
 
     /**
@@ -20,7 +22,8 @@ class MobilController extends Controller
      */
     public function create()
     {
-        
+         return view('mobil.create');
+
     }
 
     /**
@@ -28,8 +31,7 @@ class MobilController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
-       $request->validate([
+    $validateData = $request->validate([
         "nama_mobil"   => "required|string",
         "harga_mobil"  => "required|numeric",
         "kilo_mobil"   => "required|integer",
@@ -37,56 +39,65 @@ class MobilController extends Controller
         "foto_mobil"   => "required|image|mimes:jpg,jpeg,png",
     ]);
 
-    // Default null kalau user nggak upload
-    $path = null;
-
-    // Kalau user upload foto
-    if ($request->hasFile('foto_mobil')) {
-        // simpan ke folder storage/app/public/mobils
-        $path = $request->file('foto_mobil')->store('image', 'public');
+    if($request->hasFile('foto_mobil')){
+        $path = $request->file('foto_mobil')->store('mobil_image','public');
+        $validateData ['foto_mobil']= $path;
     }
 
-    // Simpan data ke database
-    Mobil::create([
-        'nama_mobil'   => $request->nama_mobil,
-        'harga_mobil'  => $request->harga_mobil,
-        'kilo_mobil'   => $request->kilo_mobil,
-        'tahun_mobil'  => $request->tahun_mobil,
-        'foto_mobil'   => $path, // simpan path ke kolom foto_mobil
-    ]);
-
-    return redirect('mobil')->with('success', 'Mobil berhasil ditambahkan!');
+    Mobil::create($validateData);
+    return redirect('mobil');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Mobil $mobil)
+    public function show(string $id)
     {
-        //
+        $mobil = Mobil::findOrFail($id);
+        return view('mobil.show', compact('mobil'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Mobil $mobil)
+    public function edit(string $id)
     {
-        //
+        $mobil = Mobil::findOrFail($id);
+        return view('mobil.edit', compact('mobil'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Mobil $mobil)
+    public function update(Request $request, string $id)
     {
-        //
+        $mobil = Mobil::findOrFail($id);
+        $validateData = $request->validate([
+            "nama_mobil"=> "required|string",
+            "harga_mobil"=> "required|numeric",
+            "kilo_mobil"=> "required|integer",
+            "tahun_mobil"=> "required|integer",
+            "foto_mobil"=> "image|mimes:jpg,jpeg,png",
+        ]);     
+
+        if(
+            $request->hasFile('foto_mobil')){
+            $path = $request->file('foto_mobil')->store('mobil_image', 'public');
+            $validateData ['foto_mobil']= $path;
+        };
+        
+        $mobil->update( $validateData );
+        return redirect ('mobil');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Mobil $mobil)
+    public function destroy(string $id)
     {
-        //
+        $mobil = Mobil::findOrFail($id);
+        $mobil->delete();
+
+        return redirect('mobil');
     }
 }

@@ -27,7 +27,7 @@
                     <img class="sm:ml-0 ml-auto rounded-xl object-cover" src="/storage/image/about2.jpg"
                         alt="about Us image" />
                 </div>
-                <div class="w-full flex-col justify-center lg:items-start items-center gap-10 inline-flex">
+                <div id="about" class="w-full flex-col justify-center lg:items-start items-center gap-10 inline-flex">
                     <div class="w-full flex-col justify-center items-start gap-8 flex">
                         <div class="w-full flex-col justify-start lg:items-start items-center gap-3 flex">
                             <h2
@@ -61,8 +61,8 @@
             </div>
         </div>
     </section>
-                                                    <section class="py-24">
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section class="py-24">
+      <div id="contact" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="grid lg:grid-cols-2 grid-cols-1">
             <div class="lg:mb-0 mb-10">
                 <div class="group w-full h-full">

@@ -8,7 +8,5 @@ use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
-Route::resource('motor', UiMotor::class);
-Route::resource('mobil', UiMobil::class);
-Route::resource('tambahmotor', MotorController::class);
-Route::resource('tambahmobil', MobilController::class);
+Route::resource('motor', MotorController::class);
+Route::resource('mobil', MobilController::class);

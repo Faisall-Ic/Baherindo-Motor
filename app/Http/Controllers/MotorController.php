@@ -12,7 +12,8 @@ class MotorController extends Controller
      */
     public function index()
     {
-        return view('motor.create');
+        $motor = MotorOsis::paginate(10);
+        return view('motor.index', compact('motor'));
     }
 
     /**
@@ -20,7 +21,7 @@ class MotorController extends Controller
      */
     public function create()
     {
-        //
+        return view('motor.create');
     }
 
     /**
@@ -28,33 +29,21 @@ class MotorController extends Controller
      */
     public function store(Request $request)
 {
-    $request->validate([
+    $validateData = $request->validate([
         "nama_motor"   => "required|string",
-        "harga_motor"  => "required|integer",
+        "harga_motor"  => "required|numeric",
         "kilo_motor"   => "required|integer",
         "tahun_motor"  => "required|integer",
         "foto_motor"   => "required|image|mimes:jpg,jpeg,png|max:2048",
     ]);
 
-    // Default null kalau user nggak upload
-    $path = null;
-
-    // Kalau user upload foto
-    if ($request->hasFile('foto_motor')) {
-        // simpan ke folder storage/app/public/motors
-        $path = $request->file('foto_motor')->store('image', 'public');
+    if($request->hasFile('foto_motor')){
+        $path = $request->file('foto_motor')->store('motor_image','public');
+        $validateData ['foto_motor']= $path;
     }
 
-    // Simpan data ke database
-    MotorOsis::create([
-        'nama_motor'   => $request->nama_motor,
-        'harga_motor'  => $request->harga_motor,
-        'kilo_motor'   => $request->kilo_motor,
-        'tahun_motor'  => $request->tahun_motor,
-        'foto_motor'   => $path, // simpan path ke kolom foto_motor
-    ]);
-
-    return redirect('motor')->with('success', 'Motor berhasil ditambahkan!');
+    MotorOsis::create($validateData);
+    return redirect('motor');
 }
 
 
@@ -63,7 +52,8 @@ class MotorController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $motor = MotorOsis::findOrFail($id);
+        return view('motor.show', compact('motor'));
     }
 
     /**
@@ -71,7 +61,8 @@ class MotorController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $motor = MotorOsis::findOrFail($id);
+        return view('motor.edit', compact('motor'));
     }
 
     /**
@@ -79,14 +70,32 @@ class MotorController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
-    }
+        $motor = MotorOsis::findOrFail($id);
+        $validateData = $request->validate([
+            "nama_motor"=> "required|string",
+            "harga_motor"=> "required|numeric",
+            "kilo_motor"=> "required|integer",
+            "tahun_motor"=> "required|integer",
+            "foto_motor"=> "image|mimes:jpg,jpeg,png",
+        ]);     
+
+        if(
+            $request->hasFile('foto_motor')){
+            $path = $request->file('foto_motor')->store('motor_image', 'public');
+            $validateData ['foto_motor']= $path;
+        };
+        
+        $motor->update( $validateData );
+        return redirect ('motor');    }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        //
+        $motor = MotorOsis::findOrFail($id);
+        $motor->delete();
+
+        return redirect('motor');
     }
 }

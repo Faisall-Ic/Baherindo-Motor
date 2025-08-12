@@ -1,6 +1,6 @@
 @extends('Layouts.main')
 
-@section('title', 'Detail Motor - ' . $motor->nama_motor)
+@section('title', 'Detail Mobil - ' . $mobil->nama_mobil)
 
 @section('content')
 <div class="bg-gray-50 min-h-screen flex justify-center items-center p-6">
@@ -9,13 +9,13 @@
 
         <!-- Judul -->
         <div class="p-5 border-b border-gray-200">
-            <h2 class="text-3xl font-bold text-gray-800 tracking-tight">{{ $motor->nama_motor }}</h2>
+            <h2 class="text-3xl font-bold text-gray-800 tracking-tight">{{ $mobil->nama_mobil }}</h2>
         </div>
 
-        <!-- Foto motor -->
+        <!-- Foto mobil -->
         <div class="bg-gray-100 overflow-hidden">
-            <img src="{{ asset('storage/' . $motor->foto_motor) }}" 
-                 alt="Foto Motor" 
+            <img src="{{ asset('storage/' . $mobil->foto_mobil) }}" 
+                 alt="Foto mobil" 
                  class="w-full h-80 object-cover transform transition duration-500 hover:scale-105">
         </div>
 
@@ -24,11 +24,11 @@
             <div>
                 <h3 class="text-lg font-medium text-gray-600">Details</h3>
                 <p class="text-2xl font-bold text-gray-900">
-                    Rp. {{ number_format($motor->harga_motor, 0, ',', '.') }}
+                    Rp. {{ number_format($mobil->harga_mobil, 0, ',', '.') }}
                 </p>
             </div>
-            <p class="text-gray-600">Tahun: {{ $motor->tahun_motor }}</p>
-            <p class="text-gray-600 mb-3">Kilometer: {{ number_format($motor->km_motor, 0, ',', '.') }} KM</p>
+            <p class="text-gray-600">Tahun: {{ $mobil->tahun_mobil }}</p>
+            <p class="text-gray-600 mb-3">Kilometer: {{ number_format($mobil->km_mobil, 0, ',', '.') }} KM</p>
 
             <!-- Tombol WhatsApp -->
             <button type="button" onclick="openPopup('whatsapp')" 
@@ -38,11 +38,11 @@
 
             <!-- Tombol Edit & Delete -->
             <div class="flex gap-3 pt-2">
-                <a href="{{ route('motor.edit', $motor->id) }}" 
+                <a href="{{ route('mobil.edit', $mobil->id) }}" 
                    class="flex-1 text-center bg-gray-800 hover:bg-gray-700 text-white font-medium py-3 rounded-lg transition duration-300 transform hover:scale-[1.02]">
                     Edit
                 </a>
-                <form action="{{ route('motor.destroy', $motor->id) }}" method="POST" class="flex-1" id="deleteForm">
+                <form action="{{ route('mobil.destroy', $mobil->id) }}" method="POST" class="flex-1" id="deleteForm">
                     @csrf
                     @method('DELETE')
                     <button type="button" onclick="openPopup('delete')" class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-3 rounded-lg transition duration-300 transform hover:scale-[1.02]">
@@ -76,14 +76,14 @@ function openPopup(type) {
 
     if (type === 'whatsapp') {
         title.textContent = 'Konfirmasi Order';
-        message.textContent = 'Anda akan diarahkan ke WhatsApp untuk memesan motor ini.';
+        message.textContent = 'Anda akan diarahkan ke WhatsApp untuk memesan mobil ini.';
         confirmBtn.onclick = function() {
-            window.location.href = "https://wa.me/6287797895571?text=Halo,%20saya%20tertarik%20dengan%20{{ rawurlencode($motor->nama_motor) }}";
+            window.location.href = "https://wa.me/6287797895571?text=Halo,%20saya%20tertarik%20dengan%20{{ rawurlencode($mobil->nama_mobil) }}";
         };
     } 
     else if (type === 'delete') {
-        title.textContent = 'Hapus motor';
-        message.textContent = 'Yakin ingin menghapus motor ini? Tindakan ini tidak bisa dibatalkan.';
+        title.textContent = 'Hapus mobil';
+        message.textContent = 'Yakin ingin menghapus mobil ini? Tindakan ini tidak bisa dibatalkan.';
         confirmBtn.onclick = function() {
             document.getElementById('deleteForm').submit();
         };
